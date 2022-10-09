@@ -1,0 +1,110 @@
+
+\documentclass[10pt,a4paper]{article} 
+%\usepackage[debug]{texdepends}
+
+\usepackage{color}
+\usepackage{pdfswitch}
+%\usepackage{texgraphicx}% to include .fig files
+\usepackage{figlatex}% to include .fig files
+\graphicspath{{fig/}{eps/}}
+
+%\usepackage{graphicx}%
+\usepackage{subfigure}%
+\usepackage{subfigure}%
+\usepackage{boxedminipage}%
+
+\author{Vincent Danjean}
+\title{Example}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\renewcommand{\subfigtopskip}{1pt} %
+\renewcommand{\subfigcapskip}{0pt} %
+%\renewcommand{\subfigcapmargin}{0pt} %
+\renewcommand{\subfigbottomskip}{5pt} %
+\newcommand{\goodgap}{%
+  \hspace{\subfigtopskip}%
+  \hspace{\subfigbottomskip}%
+}
+\renewcommand{\topfraction}{1}
+\renewcommand{\bottomfraction}{1}
+\renewcommand{\textfraction}{0.1}
+\includegraphics[scale=0.5]{fig/simple.fig}
+
+\begin{figure}[htb]
+  %\vspace{-0.7cm}
+  \centering
+%  \subfigure[Run]{
+  \label{fig:newact-block.1}
+    \includegraphics[scale=0.5,subfig=1]{nab-a.fig}
+%  }%\goodgap
+  %$\Rightarrow$
+%  \subfigure[Blocking syscall]{
+    \label{fig:newact-block.2}
+    \includegraphics[scale=0.5,subfig=2]{fig/nab-a.fig}
+%  }
+  \\
+%  \subfigure[Waking up]{
+  \label{fig:newact-block.3}
+    \includegraphics[scale=0.5,subfig=3]{subrep/nab-b.fig}
+%  }%\goodgap
+  %$\Rightarrow$
+%  \subfigure[Ru]{
+    \label{fig:newact-block.4}
+    %\includegraphics[scale=0.7]{newact-block_4.fig}
+    \includegraphics[scale=0.5,subfig=4]{fig/subrep/nab-b.fig}
+%  }
+%  \subfigure[Rest]{
+    \label{fig:newact-block.5}
+    \includegraphics[scale=0.5,subfig=5]{fig2/nab-c.fig}
+%  }
+    \label{fig:newact-block.6}
+    \includegraphics[scale=0.5,subfig=5]{fig2/subrep2/nab-d.fig}
+  \begin{boxedminipage}{\linewidth}
+    \small
+    \begin{description}
+    \item[\ref{fig:newact-block.1}] The user-level thread~$1$ is running onto
+      an activation~$A$ bounded to a processor.
+    \item[\ref{fig:newact-block.2}] The thread~$1$ makes a system call
+      blocking the activation~$A$. Another activation~$B$ is launched
+      which runs another user-level thread~$2$.
+    \item[\ref{fig:newact-block.3}] An interrupt occurs. The blocked
+      activation $A$ will be able to wake up (when requested by the
+      application).
+    \item[\ref{fig:newact-block.4}] The activation $B$ is used to send
+      the unblocking notice event with an upcall. The user thread
+      scheduler put the thread~$1$ in the ready-to-run thread queue.
+    \item[\ref{fig:newact-block.5}] When the user thread scheduler
+      wants to restart the unblocked thread, it saves the currently
+      running thread state and discard the current activation in
+      favor of the unblocked thread activation.
+    \end{description}
+    To limit the number of activations, unblocked activations are
+    rescheduled instead of new ones when a thread blocks (state
+    \ref{fig:newact-block.2}).
+  \end{boxedminipage}
+  %\vspace{-0.4cm}
+  \caption{Blocking System Call}
+  \label{fig:newact-block}
+  %\vspace{-0.9cm}
+\end{figure}
+\begin{figure}
+\includegraphics[subfig=2,scale=0.5]{fig/logo.svg}
+\end{figure}
+\begin{figure}
+\includegraphics[subfig=1,scale=0.5]{fig/logo.svg}
+\end{figure}
+\begin{figure}
+\includegraphics[subfig=3,width=\linewidth]{fig/logo.svg}
+\end{figure}
+
+% test \graphicspath support
+\includegraphics{img.pdf}
+
+\end{document}
+

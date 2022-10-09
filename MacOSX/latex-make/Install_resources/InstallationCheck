@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ ! -x "$(which kpsepath)" ]; then
+	exit 113
+fi
+
+texmf_root=/usr/local/texlive/texmf-local
+CLEAN_REP=0
+if [ -d "$texmf_root" ]; then
+	CLEAN_REP="$texmf_root"
+	PREV_REP="$(dirname "$CLEAN_REP")"
+	while [ ! -d "$PREV_REP" ]; do
+		CLEAN_REP="$PREV_REP"
+		 PREV_REP="$(dirname "$PREV_REP")"
+	done
+	mkdir -p "$texmf_root"
+fi
+RET=0
+kpsepath tex | tr ':' '\n' | sed -e 's/^!!//' | while read d ; do \
+	cd $d 2>/dev/null && pwd
+done | grep -q -s "^$texmf_root/tex\$" || RET=1
+if [ "$RET" = 1 ]; then
+	test x"$CLEAN_REP" != "x" && rm -r "$CLEAN_REP"
+fi
+test "$RET" = 1 && exit 114
+
+if [ ! -x "$(which kpsepath)" ]; then
+	exit 115
+fi
+
+exit 0
+

@@ -1,0 +1,283 @@
+#!/bin/bash
+
+prefix=/usr/local
+texmf_prefix=
+
+usage() {
+	cat <<EOF
+usage: $(basename "$0") [options]
+OPTIONS:
+  --update		use PREFIX and TDS from a previous (existing) installation
+  --no-update		do no use PREFIX and TDS from a previous (existing) installation
+  --prefix PREFIX       use PREFIX as prefix path for installation
+  --texmf-prefix TDS    configure LaTeX-Make to be installed into the
+                        TeX Directory Standard 'TDS'
+
+EOF
+}
+
+error() {
+	echo 1>&2 "Error: $1"
+	echo 1>&2
+	usage 1>&2
+	exit 1
+}
+
+cleanup-path() { #1 path
+	local dir="$1"
+	local motif rep dir2
+	if [ -z "$dir" ]; then
+		return;
+	fi
+	dir="$dir/"
+	motif="//"
+	rep="/"
+	dir2="${dir/$motif/$rep}"
+	while test "$dir2" != "$dir"; do
+		dir="$dir2"
+		dir2=${dir/$motif/$rep}
+	done
+	motif="/./"
+	rep="/"
+	dir2="${dir/$motif/$rep}"
+	while test "$dir2" != "$dir"; do
+		dir="$dir2"
+		dir2=${dir/$motif/$rep}
+	done
+	dir2="$(echo "$dir" | sed -E -e 's,[^/]+/\.\./,,')"
+	while test "$dir2" != "$dir"; do
+		dir="$dir2"
+		dir2="$(echo "$dir" | sed -E -e 's,[^/]+/\.\./,,')"
+	done
+	dir="${dir%/}"
+	echo "$dir"
+}
+
+getopt -T >/dev/null 2>&1
+if [ $? == 4 ]; then
+	TMP="$(getopt --shell bash --options h \
+		--name "$(basename "$0")" \
+		--longoptions help,prefix:,texmf-prefix:,update,no-update \
+		-- "$@")"
+	if [ $? != 0 ]; then
+		usage 1>&2
+		exit 1
+	fi
+	eval set -- "$TMP"
+fi
+
+cur_prefix="$(make --no-print-directory --quiet -f detect-current-prefix.mk)"
+TDS_current="$(kpsewhich -format texmfscripts LaTeX.mk | sed -e 's,/scripts/latex-make/LaTeX.mk$,,p;d')"
+TDS_current="$(cleanup-path "$TDS_current")"
+
+SETUP=
+
+update() {
+	SETUP=1
+	if [ -n "$cur_prefix" ]; then
+		prefix="$cur_prefix"
+	fi
+	if [ -n "$TDS_current" ]; then
+		texmf_prefix="$TDS_current"
+	fi
+}
+
+while [ $# != 0 ]; do
+	case "$1" in
+	--prefix=*) prefix="${1#--prefix=}" ;;
+	--prefix) prefix="$2" ; shift;;
+	--texmf-prefix=*) texmf_prefix="${1#--texmf-prefix=}" ;;
+	--texmf-prefix) texmf_prefix="$2" ; shift;;
+	--update) update;;
+	--no-update) ;;
+	--) shift; break ;;
+	--help|-h) usage ; exit 0 ;;
+	-*) error "Unknown option '$1'" ;;
+	*) error "Invalid argument '$1'" ;;
+	esac
+	shift
+	SETUP=1
+done
+
+if [ $# != 0 ]; then
+	error "Invalid argument '$1'"
+fi
+
+if [ "$(uname -s)" != Linux -a -z "$SETUP" ]; then
+	update
+fi
+
+find-default-TDS() {
+	local dir
+	local TDS_default=
+	local TDS_default_fb=
+	for dir in "$@"; do
+		case "$dir" in
+		*-local)
+			if [ -z "$TDS_default" ]; then
+				TDS_default="$dir"
+			else
+				if [ "$(echo "$dir" | wc -c)" -lt "$(echo "$TDS_default" | wc -c)" ]; then
+					TDS_default="$dir"
+				fi
+			fi ;;
+		*)
+			if [ -z "$TDS_default_fb" ]; then
+				TDS_default_fb="$dir"
+			else
+				if [ "$(echo "$dir" | wc -c)" -lt "$(echo "$TDS_default_fb" | wc -c)" ]; then
+					TDS_default_fb="$dir"
+				fi
+			fi ;;
+		esac
+	done
+	if [ -z "$TDS_default" ]; then
+		TDS_default="$TDS_default_fb"
+	fi
+	echo "$TDS_default"
+}
+
+print-TDS() { # 1:starttoken
+	declare -a loc
+	declare -a home
+	declare -a mid
+	declare -a end
+	declare -a all
+	declare -a defs1
+	declare -a defs2
+	
+	while read dir; do
+		dir="$(cleanup-path "$dir/")"
+		case "$dir" in
+		"") ;;
+		*"/."*) end=("${end[@]}" "$dir");;
+		*"/local/"*|*"/opt/"*) loc=("${loc[@]}" "$dir");;
+		*"/etc/"*) end=("${end[@]}" "$dir");;
+		*"/var/"*) end=("${end[@]}" "$dir");;
+		"${HOME}"*) home=("${home[@]}" "$dir");;
+		*) mid=("${mid[@]}" "$dir");;
+		esac
+	done < <(kpsepath tex \
+		| tr ':' '\n' \
+		| sed -e 's/^!!//' -e 's,/*$,,' \
+		| sed -e 's,/tex$,,p;d')
+	
+	trie() {
+		local -a var
+		eval 'var=( "${'"$1"'[@]}" )'
+		for d in "${var[@]}"; do
+			echo $d
+		done | sort
+	}
+	
+	OLD_IFS="$IFS"
+	IFS="
+	"
+	all=( $(trie loc) $(trie mid) $(trie home) $(trie end) )
+	defs1=( $(trie loc) )
+	defs2=( $(trie mid) )
+	IFS="$OLD_IFS"
+	
+	TDS_default="$(find-default-TDS "${defs1[@]}")"
+	if [ -z "$TDS_default" ]; then
+		TDS_default="$(find-default-TDS "${defs2[@]}")"
+	fi
+	if [ -z "$TDS_default" ]; then
+		TDS_default="${texmf_prefix:-$prefix/share/texmf}"
+	fi
+	if [ -z "$texmf_prefix" ]; then
+		texmf_prefix="$TDS_default"
+	fi
+	local rflag uflag cflag dflag aflag pdir
+	local cur="$(cleanup-path "$texmf_prefix")"
+	for dir in "${all[@]}" // ; do
+		rflag=""
+		uflag=""
+		cflag=""
+		dflag=""
+		aflag=""
+		if [ "$dir" == '//' ]; then
+			if [ "$cur" == '//' ]; then
+				continue
+			fi
+			dir="$cur"
+		fi
+		if [ "$dir" == "$TDS_default" ]; then
+			dflag="*"
+		fi
+		if [ "$dir" == "$cur" ]; then
+			aflag="@"
+			cur='//'
+		fi
+		if [ "$dir" == "$TDS_current" ]; then
+			cflag="+"
+		fi
+		if [ -e "$dir" ]; then
+			pdir="$dir"
+		else
+			uflag="U"
+			pdir="$(dirname "$dir")"
+			while [ ! -d "$pdir" ]; do
+				pdir="$(dirname "$pdir")"
+			done
+		fi
+		if [ ! -w "$pdir" ]; then
+			rflag="R"
+		fi
+		printf "%s[%1s%1s%1s%1s%1s] %s\n" "$1" "$aflag" "$dflag" "$cflag" "$rflag" "$uflag" "$dir"
+	done 
+	echo "### Current configuration" > config.mk
+	echo "prefix=$prefix" >> config.mk
+	echo "texmf_prefix=$texmf_prefix" >> config.mk
+}
+
+cat <<EOF
+When installing LaTeX-Make, two paths must be chosen:
+* prefix:
+  The 'LaTeX.mk' file will be installed into \${prefix}/include. If you use a
+  directory where your GNU-Make look for included files, you will be able to
+  just put 'include LaTeX.mk' into your Makfiles.
+    By default, LaTeX-Make use the '/usr/local' prefix, so 'LaTeX.mk' will
+  be installed into '/usr/local/include'.
+EOF
+if [ -n "$cur_prefix" ]; then
+	echo "    Currently, (an old version of) LaTeX-Make seems to be already installed"
+	echo "  into '$cur_prefix'"
+fi
+cat <<EOF
+
+* texmf_prefix:
+  This is the base TeX tree (TeX Directory Structure) in which all LaTeX files
+  will be installed. By default, this is '\${prefix}/share/texmf' but a list
+  of such directories configurated on this system is provided below.
+  One of them should probably be used.
+
+Valid texmf_prefix values on this system:
+=========================================
+EOF
+print-TDS "  "
+cat <<EOF
+
+Flags meaning:
+  @: current configuration
+  *: default auto choice (not always the best one...)
+  +: current installation (if an old installation is detected)
+  R: read-only TDS. Use 'sudo' for 'make install' if choosen
+  U: unexistant but configurated TDS, will be created if choosen
+
+You can now run:
+================
+    make
+    make check #optional
+    [sudo] make install
+
+    or you can re-run this script to change the prefix and/or the texmf_prefix
+
+EOF
+echo "***************************"
+while read l ; do
+	echo "* $l";
+done < config.mk
+echo "***************************"
+echo
+

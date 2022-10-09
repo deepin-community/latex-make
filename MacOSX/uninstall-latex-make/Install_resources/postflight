@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+lsbom -s /Library/Receipts/latex-make.pkg/Contents/Archive.bom | \
+while read file ; do
+    rm /$file || true
+done
+rmdir /usr/local/teTeX/share/texmf.local/doc/latex/latex-make || true
+rmdir /usr/local/teTeX/share/texmf.local/tex/latex/latex-make || true
+rmdir /usr/local/teTeX/share/texmf.local/scripts/latex-make || true
+
+rm -r /Library/Receipts/latex-make.pkg
+rm -r /Library/Receipts/uninstall-latex-make.pkg
+
+if [ ! -x "$(which texhash)" ]; then
+  TEXDIR=/usr/local/teTeX/bin/$(uname -p)-apple-darwin-current
+  if [ -d "$TEXDIR" ]; then
+    PATH="$TEXDIR:$PATH"
+  fi
+fi
+texhash /usr/local/teTeX/share/texmf.local || true

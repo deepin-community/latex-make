@@ -1,0 +1,14 @@
+Description: Remove installation instructions from the doc
+ (not needed on Debian systems)
+Forwarded: not-needed
+--- a/README
++++ b/README
+@@ -1,8 +1,4 @@
+ 
+-To install LaTeX-Make system-wide or on an user account, please refer to
+-the INSTALL file.
+-
+-
+ The LaTeX-Make software can also be installed within the directory of a
+ LaTeX document. This is usefull if your document is under SVN or Git and if
+ some users did not installed LaTeX-Make.

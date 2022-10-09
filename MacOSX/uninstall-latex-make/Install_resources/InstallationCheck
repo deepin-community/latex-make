@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ ! -d /Library/Receipts/latex-make.pkg ]; then
+    exit 112
+fi
+

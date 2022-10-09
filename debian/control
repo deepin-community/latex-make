@@ -1,0 +1,47 @@
+Source: latex-make
+Maintainer: Vincent Danjean <vdanjean@debian.org>
+Section: tex
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               debhelper (>= 13.1~),
+               tex-common
+Build-Depends-Indep: texlive-latex-recommended,
+                     texlive-lang-french,
+                     texlive-luatex,
+                     python3,
+                     texlive-latex-extra,
+                     fig2dev,
+                     inkscape (>= 1.0~rc1),
+                     ghostscript,
+                     texlive-fonts-recommended
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/debian/latex-make
+Vcs-Git: https://salsa.debian.org/debian/latex-make.git
+Homepage: https://gitlab.inria.fr/latex-utils/latex-make
+Rules-Requires-Root: no
+
+Package: latex-make
+Architecture: all
+Depends: ${misc:Depends},
+         make,
+         python3
+Recommends: texlive-latex-recommended,
+            inkscape,
+            fig2dev,
+            ghostscript,
+            texlive-latex-extra
+Description: easy compiling of complex (and simple) LaTeX documents
+ This package provides several tools that aim to simplify the
+ compilation of LaTeX documents:
+ .
+ LaTeX.mk: a Makefile snippet to help compiling LaTeX documents in
+ DVI, PDF, PS, ... format. Dependencies are automatically tracked: one
+ should be able to compile documents with a one-line Makefile
+ containing 'include LaTeX.mk'. Complex documents (with multiple
+ bibliographies, indexes, glossaries, ...) should be correctly managed.
+ .
+ figlatex.sty: a LaTeX package to easily insert xfig figures (with
+ \includegraphics{file.fig}). It can interact with LaTeX.mk so that the
+ latter automatically invokes fig2dev if needed.
+ .
+ And various helper tools for LaTeX.mk

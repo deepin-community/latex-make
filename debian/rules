@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+#export DH_VERBOSE=1
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	./configure --prefix=/usr --texmf-prefix=/usr/share/texmf
+
+override_dh_install:
+	dh_install
+	dh_installtex
+
+override_dh_missing:
+	dh_missing --fail-missing
+
+# lualatex needs a writable HOME directory (see #855930)
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	mkdir -p $(CURDIR)/temp_home
+	env HOME=$(CURDIR)/temp_home dh_auto_test --
+endif
+
+override_dh_auto_clean:
+	$(RM) -rf $(CURDIR)/temp_home
+	dh_auto_clean

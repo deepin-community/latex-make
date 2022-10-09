@@ -1,0 +1,254 @@
+2021-10-26 2.4.3
+	Vincent Danjean (3):
+	* Switch to T1 font encoding and lmodern font
+	* switch to python3 by default
+	* Update version and changelog
+
+2021-01-03 2.4.2
+	Vincent Danjean (4):
+	* Update string id in MacOSX packages
+	* Fix pb when there are double '/' in paths
+	* Better dependencies on sources for examples/ Makefile
+	* Update version and changelog
+
+2020-07-10 2.4.1
+	Vincent Danjean (2):
+	* Fix latexfilter error when assuming utf-8 for LaTeX log files
+	* Switch URLs to gitlab
+	* Update version and changelog
+
+2020-06-01 2.4.0
+	Vincent Danjean (5):
+	* Look for texhash ls-R file in the correct place
+	* use new inkscape option names
+	* Better check for version update
+	* Fix figlatex for new LaTeX core
+	* Update version and changelog
+
+2018-10-17 2.3.0
+	Vincent Danjean (6):
+	* LaTeX-Make-local-install targets a texmf tree now.
+	* Adapt examples
+	* Add the DEPENDS_EXCLUDE variable
+	* Improve doc and backward compatibility
+	* ignore comment.cut file from the comment package
+	* Update version
+
+2018-09-04 2.2.5
+	Vincent Danjean (2):
+	* Fix compatibility with recent fig2dev
+	* New version
+
+2018-05-29 2.2.4
+	Vincent Danjean (6):
+	* Force correct permissions on directories
+	* Add logs, fix missing ifthen package and checksum
+	* Fix python synxtax to be valid in 2.7 and 3
+	* Reorganize pdfswitch
+	* Check version when building CTAN package
+	* New version
+
+2017-01-08 2.2.3
+	Vincent Danjean (5):
+	* Remove duplicate line
+	* Add support for a 'debug' VERB level
+	* Print a usefull number when max recursion is reached
+	* Add lualatex support
+	* Update version in all files and update Changes
+
+2016-02-09 2.2.2
+	Vincent Danjean (4):
+	* Improve display when calling LaTeX-Make-local-install
+	* Fix BSD/MacOSX comptatibility bug
+	* Fix configure for MacOSX
+	* Update version in *all* files
+
+2016-02-09 2.2.1
+	Vincent Danjean (3):
+	* Configure script display current installation if found
+	* Add --update configure flag
+	* Update version
+
+2016-02-08 2.2.0
+	Vincent Danjean (18):
+	* Improve install doc
+	* Add a gitignore
+	* Detect the system utilities version at run-time
+	* Fix typo in ctan README
+	* Avoid non portable "echo -n" construct
+	* Allow installing LaTeX-Make locally
+	* prefix and texmf_prefix are required at build time
+	* Fill missing entries in Changelog
+	* Add support to test version is updated everywhere
+	* Allow to uninstall LaTeX-Make local copy
+	* Use the 'install' mechanism to compile the example
+	* Add test for graphicspath support in example.tex
+	* remove unused part of examples/Makefile
+	* Ignore installed files in examples/
+	* Fix dependency on LaTeX.mk in src/
+	* Avoid at most the requirement of using Make to install the package
+	* Update README
+	* Update version
+
+2014-10-10 2.1.19.1
+	Vincent Danjean (2):
+	* Update README doc and fix zip generation for CTAN
+	* Minor version for CTAN stuff only
+
+2014-10-09 2.1.19
+	Jim Paris (1):
+	* Fix improperly escaped regexp in filterlatex.py
+
+	Tomasz Buchert (1):
+	* \ifpdf does not work with XeTeX or XeLaTeX
+
+	Vincent Danjean (8):
+	* add a rule for .fig->.pdf and silent LaTeX.mk when no *.tex files are present
+	* Fix latexfilter.py
+	* Call texhash if required
+	* Fix locale for greping output
+	* Add a script to detect valid TDS
+	* Merge branch 'xetex'
+	* Speedup improvement
+	* New version 2.1.19
+
+2012-06-09 2.1.18
+	Vincent Danjean (5):
+	* update fink md5sum
+	* Cleanup Changelog
+	* Fix bug when creating subfigs
+	* Add a 'make check' in the main Makefile
+	* New version 2.1.18
+
+2012-06-06 2.1.17
+	Mattieu Gallet (5):
+	* Ajout du support SVG
+	* amélioration de la doc + ajout d'un SVG dans l'exemple
+	* commit avec latexfilter et figdepth en Python
+	* integration
+	* oubli d'un code de debug
+
+	Vincent Danjean (6):
+	* fix fink md5sum
+	* Fix dist generation with git
+	* Clean whitespaces Changelog
+	* Merge branch 'wip'
+	* Fix quoting bug in LaTeX.mk
+	* Bump Version
+
+2011-09-25 Matthieu Gallet
+	* New release 2.1.16
+	* add support for svg files
+
+2009-11-08 Vincent Danjean
+	* New release 2.1.15
+	* really allow building dist with git
+	* not empty tarball for this release :-)
+
+2009-10-27 Vincent Danjean
+	* New release 2.1.14
+	* Fix fink packaging
+	* allow building dist with git
+
+2009-09-29 Vincent Danjean
+	* New release 2.1.13
+	* Fix bug in installation paths
+
+2009-09-29 Vincent Danjean
+	* New release 2.1.12
+	* Fix bugs
+	* Add support for 'nomencl' package
+	* Better documentation (typo, about fink, ...)
+	* Release on CTAN
+
+2007-03-06 Vincent Danjean
+	* New release 2.1.11
+	* Bug fix in managing per document add-variables
+	* Load all needed flavors (and not only global flavors)
+	* Fix build dependencies for fink
+
+2006-11-16 Vincent Danjean
+	* New release 2.1.10
+
+2006-11-14 Vincent Danjean
+	* Improve MacOSX installer :
+	  - check that teTeX is installed where we want before installing
+	    LaTeX-Make
+	  - Add teTeX bin in the installer PATH if needed
+
+2006-05-17 Vincent Danjean
+	* Use the 'scripts' TeX dir 
+
+2006-04-25 Arnaud Legrand
+
+	* Bug Fix in texdepends. Trailing spaces caused some
+	  misalignment in Figures.
+
+2006-04-25 Vincent Danjean
+
+	* Improve INSTALL, README and MacOSX documentation
+	* fix Makefile typo (thanks Erik Saule)
+	* New release 2.1.8
+
+2006-04-19 Vincent Danjean
+
+	* Enforce the use of \includegraphics instead of \epsfig with
+	  fig2dev (needed on MacOSX)
+	* Add requirement files
+	* Add text for MacOSX install
+	* New release 2.1.7
+
+2006-04-19 Arnaud Legrand
+
+	* Correct english typos in the doc
+	* New release 2.1.6
+
+2006-04-19 Vincent Danjean
+
+	* MacOSX Uninstaller
+
+2006-04-14 Vincent Danjean
+
+	* MacOSX Installer
+
+2006-04-04 Vincent Danjean
+
+	* Remove non-free exemples from sources
+	* New release 2.1.5
+
+2006-04-03 Vincent Danjean
+
+	* Yet another rename (suggestion from debian-devel approved by Martin
+	  and Alvin)
+	* New release 2.1.4
+
+2006-03-29 Vincent Danjean
+
+	* Rename the package due to suggestions on debian-devel
+	* New release 2.1.3
+
+2006-03-24 Vincent Danjean
+
+	* First version of the doc (waiting for patches to be improved ;-) )
+	* New release 2.1.2
+
+2006-03-09 Vincent Danjean
+
+	* Getting rid of naughty spaces that cause bad alignments
+	* repack with this modifications
+	* New release 2.1.1
+
+2006-03-09 Vincent Danjean
+
+	* move LaTeX.mk to LaTeX-mk.dtx (soon a documentation ;-) )
+	* add warning about unsupported FIGSRC: in subfig files
+	* correction of LaTeX.mk for index/glossary support
+	* New release 2.1
+
+2006-03-09 Vincent Danjean
+
+	* Rewrote LaTeX.mk
+	  Lots of variables have changed their name, hence the 2.0 version
+	  Expect some incompatibilities from previous versions if using
+	  special variables..
+	* New release 2.0

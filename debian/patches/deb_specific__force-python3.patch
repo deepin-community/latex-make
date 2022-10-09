@@ -1,0 +1,52 @@
+Description: Switch to Python3
+Author: Andreas Tille <tille@debian.org>
+Last-Update: Mon, 11 May 2020 12:47:24 +0200
+Forwarded: not-needed
+
+--- a/src/latex-make.dtx
++++ b/src/latex-make.dtx
+@@ -1780,7 +1780,7 @@
+ %
+ %    \begin{macrocode}
+ %<*figdepth>
+-#!/usr/bin/env python3
++#!/usr/bin/python3
+ #coding=utf8
+ 
+ """
+@@ -1837,7 +1837,7 @@
+ % \subsection{gensubfig}
+ %    \begin{macrocode}
+ %<*gensubfig>
+-#!/usr/bin/env python3
++#!/usr/bin/python3
+ #coding=utf8
+ 
+ """
+@@ -1905,7 +1905,7 @@
+ % \subsection{svg2dev}
+ %    \begin{macrocode}
+ %<*svg2dev>
+-#!/usr/bin/env python3
++#!/usr/bin/python3
+ #coding=utf8
+ 
+ from optparse import OptionParser
+@@ -1974,7 +1974,7 @@
+ % and underfull/overfull hbox/vbox.
+ %    \begin{macrocode}
+ %<*latexfilter>
+-#!/usr/bin/env python3
++#!/usr/bin/python3
+ #coding=utf8
+ 
+ """
+@@ -2044,7 +2044,7 @@
+ % \subsection{svgdepth}
+ %    \begin{macrocode}
+ %<*svgdepth>
+-#!/usr/bin/env python3
++#!/usr/bin/python3
+ #coding=utf8
+ 
+ import sys

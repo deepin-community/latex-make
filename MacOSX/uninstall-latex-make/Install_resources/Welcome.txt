@@ -1,0 +1,6 @@
+Welcome to the LaTeX Make Uninstallation Program. You will be
+guided through the steps necessary to uninstall LaTeX Make.
+
+Note that due to a limitation in the MacOS X installer, you need to
+*install* this uninstaller in order to remove the LaTeX Make package
+from your software.

@@ -1,0 +1,2 @@
+# Install LaTeX documentation into the directory where texdoc looks for it
+latex-make: package-contains-documentation-outside-usr-share-doc usr/share/texmf/doc/latex/latex-make/*.pdf

@@ -1,0 +1,7 @@
+Notes about the latex-make Debian package:
+==========================================
+
+TeX documentation relative to latex-make can be found in
+/usr/share/doc/texmf/latex/latex-make
+You can also read it with texdoc(1).
+

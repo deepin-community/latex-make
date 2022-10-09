@@ -1,0 +1,4 @@
+"17" = "kpsepath in not in your PATH. Please, check that your LaTeX installation can be used from a terminal.";
+"18" = "kpsepath does not report /usr/local/texlive/texmf-local/tex as a TeX directory. Please, change your default LaTeX installation (MacTeX or TeXLive should work) or install LaTeX-Make from sources to fit your LaTeX installation.";
+"19" = "This software requires at least GNU make 3.81 but 'make' is not in your PATH. If not done, install Xcode from apple website (and enable 'command line tools').";
+

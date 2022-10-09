@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ ! -x "$(which texhash)" ]; then
+  TEXDIR=/usr/local/teTeX/bin/$(uname -p)-apple-darwin-current
+  if [ -d "$TEXDIR" ]; then
+    PATH="$TEXDIR:$PATH"
+  fi
+fi
+
+texhash /usr/local/teTeX/share/texmf.local || true

@@ -1,0 +1,27 @@
+First, you need a GNU Make >= 3.81
+You can look at your version with "make --version"
+GNU Make 3.80 _DOES NOT WORK_
+
+Update: fink has make 3.81 now.
+
+To update GNU Make, you can look at
+https://sourceforge.net/tracker/index.php?func=detail&aid=1603950&group_id=17203&atid=414256
+Download make.patch and make.info
+Then, type:
+sudo cp make.patch make.info /sw/fink/dists/local/main/finkinfo/
+fink index
+fink build make
+fink install make
+
+Once you have a correct GNU Make, to build and install LaTeX-Make,
+you have to :
+sudo cp latex-make.info /sw/fink/dists/local/main/finkinfo/latex-make.info
+fink index
+fink build latex-make
+fink install latex-make
+
+Note: as latex-make.info needs to have the md5sum of the source package, it
+is not possible to include in a release the latex-make.info corresponding to
+this release.
+You will always need to get the last latex-make.info from svn...
+

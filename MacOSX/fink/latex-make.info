@@ -1,0 +1,28 @@
+Package: latex-make
+Version: 2.1.17
+Source-MD5: 189a97e0a490e51e666c649d7777bbb2
+Revision: 1
+Source: https://gitlab.inria.fr/latex-utils/latex-make/-/releases
+Maintainer: Vincent Danjean <Vincent.Danjean@ens-lyon.org>
+HomePage: https://gitlab.inria.fr/latex-utils/latex-make
+License: OSI-Approved
+DocFiles: INSTALL Changelog COPYING README
+Depends: tetex-texmf, tetex-base
+BuildDepends: make (>= 3.81-1)
+Description: Easy compiling of LaTeX documents
+CompileScript: <<
+#! /bin/sh -ev
+export LC_ALL=C
+make
+<<
+InstallScript: <<
+#! /bin/sh -ev
+export LC_ALL=C
+make install prefix=%p DESTDIR=%d
+<<
+PostInstScript: <<
+texhash %p/share/texmf
+<<
+PostRmScript: <<
+texhash %p/share/texmf
+<<
